@@ -5,6 +5,7 @@ using UnityEngine;
 
 // Use plugin namespace
 using HybridWebSocket;
+using Newtonsoft.Json;
 
 public class WebSocketDemo : MonoBehaviour {
 
@@ -21,6 +22,12 @@ public class WebSocketDemo : MonoBehaviour {
             Debug.Log("WS state: " + ws.GetState().ToString());
 
             ws.Send(Encoding.UTF8.GetBytes("Hello from Unity 3D!"));
+
+            // 以下都不行
+            // ws.Send("Hello from Unity 3D!"); // 編譯失敗
+            // ws.Send(Encoding.UTF8.GetBytes("{ \"name\": \"searitem\" }")); // 變成帶有byte的字串
+            //ws.Send(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { x = 5, y = 6 }))); // 一樣
+
         };
 
         // Add OnMessage event listener
@@ -28,7 +35,7 @@ public class WebSocketDemo : MonoBehaviour {
         {
             Debug.Log("WS received message: " + Encoding.UTF8.GetString(msg));
 
-            ws.Close();
+            // ws.Close();
         };
 
         // Add OnError event listener
