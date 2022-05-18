@@ -261,7 +261,9 @@ var LibraryWebSocket = {
 		if (instance.ws.readyState !== 1)
 			return -6;
 
-		instance.ws.send(HEAPU8.buffer.slice(bufferPtr, bufferPtr + length));
+    var byteStringArray = HEAPU8.buffer.slice(bufferPtr, bufferPtr + length);
+
+		instance.ws.send(new TextDecoder('utf8').decode(byteStringArray));
 
 		return 0;
 
