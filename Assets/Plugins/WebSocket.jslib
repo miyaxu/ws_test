@@ -168,7 +168,18 @@ var LibraryWebSocket = {
 					_free(buffer);
 				}
 
-			}
+			} else {
+				var dataBuffer = new Uint8Array(new TextEncoder().encode(ev.data).buffer);
+
+				var buffer = _malloc(dataBuffer.length);
+				HEAPU8.set(dataBuffer, buffer);
+
+				try {
+					Runtime.dynCall('viii', webSocketState.onMessage, [ instanceId, buffer, dataBuffer.length ]);
+				} finally {
+					_free(buffer);
+				}
+      }
 
 		};
 
